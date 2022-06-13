@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "360304385913",
+    "project_id": "elred-d7889",
+    "storage_bucket": "elred-d7889.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360304385913:android:7ded0aea6ea979eea819a8",
+        "android_client_info": {
+          "package_name": "com.example.elred_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360304385913-9r67rvgm4h52bnre1nid6k81ngsnebtc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA12YSqax3u9Q82S36pbjzgwYWCFMy99Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360304385913-9r67rvgm4h52bnre1nid6k81ngsnebtc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
