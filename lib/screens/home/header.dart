@@ -1,19 +1,9 @@
+import 'package:elred_test/service/app_service.dart';
 import 'package:flutter/material.dart';
 
-class Header extends StatefulWidget {
+class Header extends StatelessWidget {
   const Header({Key? key}) : super(key: key);
-
-  @override
-  State<Header> createState() => _HeaderState();
-}
-
-class _HeaderState extends State<Header> {
   final whiteColor = Colors.white;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -38,11 +28,10 @@ class _HeaderState extends State<Header> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Icon(
-                                Icons.menu,
-                                color: whiteColor,
-                                size: 32,
-                              ),
+                              child: IconButton(
+                                  onPressed: () => AppService.logout(),
+                                  icon: Icon(Icons.menu,
+                                      color: whiteColor, size: 32)),
                             ),
                             Expanded(
                               flex: 3,

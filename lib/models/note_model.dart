@@ -11,7 +11,7 @@ class NoteModel {
       required this.description,
       required this.time});
 
-  factory NoteModel.fromJson(Object json) {
+  factory NoteModel.fromJson(Object? json) {
     if (json is Map<String, dynamic>) {
       return NoteModel(
           id: json['id'],

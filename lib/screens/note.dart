@@ -111,14 +111,13 @@ class _NoteState extends State<Note> {
       case NoteMode.add:
         return ElevatedButton(
             onPressed: () {
-              var doc = widget.createNoteArguments.collectionReference.doc();
               final noteModel = NoteModel(
+                  id: AppService.dataService!.createNoteDocumentId(),
                   taskName: taskNameController.text.toString(),
                   type: noteType,
-                  id: doc.id,
                   description: descriptonController.text.toString(),
                   time: DateTime.now().millisecondsSinceEpoch.toString());
-              doc.set(noteModel.toJson()).then((value) {
+              AppService.dataService!.addNote(noteModel).then((value) {
                 if (mounted) {
                   AppService.pop();
                 }
@@ -131,27 +130,29 @@ class _NoteState extends State<Note> {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  var doc = widget.createNoteArguments.collectionReference
-                      .doc(widget.createNoteArguments.noteModel.id);
                   ScaffoldMessenger.of(context)
                       .showSnackBar(const SnackBar(content: Text('DELETING')));
-                  doc.delete().then((value) => goBack());
+                  AppService.dataService!
+                      .deleteNote(widget.createNoteArguments.noteModel.id!)
+                      .then((value) {
+                    goBack();
+                  });
                 },
                 child: const Text('DELETE')),
             const SizedBox(width: 50),
             ElevatedButton(
                 onPressed: () {
-                  var doc = widget.createNoteArguments.collectionReference
-                      .doc(widget.createNoteArguments.noteModel.id);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('UPDATING')));
                   final noteModel = NoteModel(
                       taskName: taskNameController.text.toString(),
                       type: noteType,
-                      id: doc.id,
+                      id: widget.createNoteArguments.noteModel.id,
                       description: descriptonController.text.toString(),
                       time: DateTime.now().millisecondsSinceEpoch.toString());
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(const SnackBar(content: Text('UPDATING')));
-                  doc.set(noteModel.toJson()).then((value) => goBack());
+                  AppService.dataService!.updateNote(noteModel).then((value) {
+                    goBack();
+                  });
                 },
                 child: const Text('UPDATE'))
           ],

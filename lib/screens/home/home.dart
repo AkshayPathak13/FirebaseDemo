@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elred_test/arguments.dart';
 import 'package:elred_test/models/note_model.dart';
 import 'package:elred_test/enums.dart';
@@ -19,14 +18,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late final CollectionReference<Map<String, dynamic>> noteCollectionReference;
   final DateFormat dateFormat = DateFormat("hh aa");
   @override
   void initState() {
-    noteCollectionReference = FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.arguments.googleSignInAccount.email)
-        .collection('notes');
     super.initState();
   }
 
@@ -34,10 +28,6 @@ class _HomeState extends State<Home> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
-
-  Stream<List<NoteModel>> getNotes() =>
-      noteCollectionReference.snapshots().map((snapshot) =>
-          snapshot.docs.map((doc) => NoteModel.fromJson(doc.data())).toList());
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +50,11 @@ class _HomeState extends State<Home> {
         ]),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              AppService.navigateTo(
-                  Note.route,
-                  NoteArguments(
+              AppService.navigateTo(Note.route,
+                  arguments: NoteArguments(
                       navigation: NAVIGATION.push,
                       noteMode: NoteMode.add,
-                      noteModel: NoteModel.empty(),
-                      collectionReference: noteCollectionReference));
+                      noteModel: NoteModel.empty()));
             },
             child: const Icon(Icons.add)),
       ),
@@ -76,7 +64,7 @@ class _HomeState extends State<Home> {
   Expanded noteList() {
     return Expanded(
       child: StreamBuilder<List<NoteModel>>(
-          stream: getNotes(),
+          stream: AppService.dataService!.getNotes(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -100,14 +88,11 @@ class _HomeState extends State<Home> {
                               children: [
                                 ListTile(
                                   onTap: () {
-                                    AppService.navigateTo(
-                                        Note.route,
-                                        NoteArguments(
+                                    AppService.navigateTo(Note.route,
+                                        arguments: NoteArguments(
                                             navigation: NAVIGATION.push,
                                             noteMode: NoteMode.update,
-                                            noteModel: snapshot.data![index],
-                                            collectionReference:
-                                                noteCollectionReference));
+                                            noteModel: snapshot.data![index]));
                                   },
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 5),
